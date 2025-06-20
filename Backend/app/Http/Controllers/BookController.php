@@ -56,22 +56,22 @@ class BookController extends Controller
     }
 
     public function delete(int $id)
-{
-    $book = Book::where('id', $id)->delete();
-    if ($book){
+    {
+        $book = Book::where('id', $id)->delete();
+        if ($book) {
+            return response()->json([
+                "message" => "delete sccessfuly!",
+                "data" => $book
+            ]);
+        }
+    }
+
+    public function show($id)
+    {
+        $book = Book::find($id);
         return response()->json([
-            "message" => "delete sccessfuly!",
-            "data" => $book
+            'message' => 'Request successful!',
+            'data' => $book
         ]);
     }
-}
-
-public function show( $id)
-{
-    $book = Book::find($id);
-    return response()->json([
-        'message' => 'Request successful!',
-        'data' => $book  
-    ]);
-} 
 }
