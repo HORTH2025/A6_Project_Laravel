@@ -3,13 +3,9 @@
     <!-- Left: Logo and Navigation -->
     <div class="flex items-center gap-12">
       <!-- Logo -->
-<<<<<<< HEAD
-     
-=======
       <router-link to="/" class="flex items-center gap-2">
         <span class="text-2xl font-bold text-blue-700">Library</span>
       </router-link>
->>>>>>> 0f4dc87741d0db1c0c733a369d96f2bd8a2831a6
 
       <!-- Navigation Items -->
       <NavigationItem
@@ -18,25 +14,6 @@
         :item="item" class="text-right"
       />
     </div>
-<<<<<<< HEAD
-
-    <!-- Right: Search Input and Button -->
-    <div class="flex items-center gap-2">
-      <input
-        v-model="searchQuery"
-        type="text"
-        placeholder="Search..."
-        class="border border-gray-300 px-3 py-1 rounded-md"
-      />
-      <button
-        @click="search"
-        class="bg-black text-white px-4 py-1 rounded-md "
-      >
-        Search
-      </button>
-    </div>
-=======
->>>>>>> 0f4dc87741d0db1c0c733a369d96f2bd8a2831a6
   </nav>
 </template>
 
