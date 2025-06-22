@@ -3,7 +3,9 @@
     <!-- Left: Logo and Navigation -->
     <div class="flex items-center gap-12">
       <!-- Logo -->
-     
+      <router-link to="/" class="flex items-center gap-2">
+        <span class="text-2xl font-bold">Library</span>
+      </router-link>
 
       <!-- Navigation Items -->
       <NavigationItem
@@ -18,12 +20,13 @@
       <input
         v-model="searchQuery"
         type="text"
-        placeholder="Search..."
+        placeholder="Search authors..."
         class="border border-gray-300 px-3 py-1 rounded-md"
+        @keyup.enter="searchAuthors"
       />
       <button
-        @click="search"
-        class="bg-black text-white px-4 py-1 rounded-md "
+        @click="searchAuthors"
+        class="bg-black text-white px-4 py-1 rounded-md"
       >
         Search
       </button>
@@ -34,6 +37,9 @@
 <script setup>
 import NavigationItem from "./NavigationItem.vue";
 import { ref } from "vue";
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 // Navigation Items
 const navItems = ref([
@@ -45,7 +51,19 @@ const navItems = ref([
 // Search Functionality
 const searchQuery = ref("");
 
-function search() {
-  alert("You searched for: " + searchQuery.value);
+function searchAuthors() {
+  if (router.currentRoute.value.path === '/author') {
+    // If we're already on the author page, navigate with query params
+    router.push({
+      path: '/author',
+      query: { search: searchQuery.value }
+    });
+  } else {
+    // If we're on another page, navigate to author page with search query
+    router.push({
+      path: '/author',
+      query: { search: searchQuery.value }
+    });
+  }
 }
 </script>
