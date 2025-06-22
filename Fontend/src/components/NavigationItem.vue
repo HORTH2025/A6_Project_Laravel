@@ -1,10 +1,10 @@
 <template>
   <router-link
     :to="item.path"
-    class="flex flex-col items-center gap-1 text-gray-700 hover:text-blue-600 sm:flex-row sm:items-center"
+    class="text-gray-600 hover:text-blue-600 transition-all flex items-center gap-1 text-sm font-medium"
   >
-    <span class="material-symbols-outlined">{{ item.icon }}</span>
-    <span class="font-medium">{{ item.label }}</span>
+    <span class="material-symbols-outlined text-base">{{ item.icon }}</span>
+    <span>{{ item.label }}</span>
   </router-link>
 </template>
 
