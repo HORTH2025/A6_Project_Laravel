@@ -3,7 +3,7 @@
     <!-- Left: Navigation Items -->
     <div class="flex items-center gap-12">
       <!-- Logo -->
-      <router-link to="/" class="flex items-center gap-2">
+      <router-link to="/Book" class="flex items-center gap-2">
         <span class="text-2xl font-bold text-blue-700">Library</span>
       </router-link>
 
@@ -27,27 +27,5 @@ const navItems = ref([
   { label: "Member", path: "/member", icon: "groups" },
 ]);
 
-const searchQuery = ref("");
-
-function search() {
-  alert("You searched for: " + searchQuery.value);
-}
 </script>
 
-<style scoped>
-/* Prevent any scroll, swipe, or bounce behavior on the nav bar */
-.no-swipe {
-  touch-action: none;
-  overscroll-behavior: contain;
-  user-select: none;
-  -webkit-user-select: none;
-  pointer-events: auto; /* still allow clicking buttons and typing input */
-}
-
-/* Optional: Disable text selection just on navigation bar */
-nav input,
-nav button {
-  user-select: text;
-  pointer-events: auto;
-}
-</style>
