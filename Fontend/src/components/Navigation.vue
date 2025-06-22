@@ -2,40 +2,18 @@
   <nav class="no-swipe h-16 flex w-10/12 m-auto items-center justify-between">
     <!-- Left: Navigation Items -->
     <div class="flex items-center gap-12">
-<<<<<<< HEAD
       <!-- Logo -->
       <router-link to="/" class="flex items-center gap-2">
         <span class="text-2xl font-bold text-blue-700">Library</span>
       </router-link>
 
       <!-- Navigation Items -->
-=======
->>>>>>> feature_bookfront
       <NavigationItem
         v-for="item in navItems"
         :key="item.label"
         :item="item" class="text-right"
       />
     </div>
-<<<<<<< HEAD
-=======
-
-    <!-- Right: Search Input and Button -->
-    <div class="flex items-center gap-2">
-      <input
-        v-model="searchQuery"
-        type="text"
-        placeholder="Search..."
-        class="border border-gray-300 px-3 py-1 rounded-md"
-      />
-      <button
-        @click="search"
-        class="bg-black text-white px-4 py-1 rounded-md"
-      >
-        Search
-      </button>
-    </div>
->>>>>>> feature_bookfront
   </nav>
 </template>
 
