@@ -1,19 +1,41 @@
 <template>
-  <nav class="h-16 flex w-10/12 m-auto items-center justify-between">
-    <!-- Left: Logo and Navigation -->
+  <nav class="no-swipe h-16 flex w-10/12 m-auto items-center justify-between">
+    <!-- Left: Navigation Items -->
     <div class="flex items-center gap-12">
+<<<<<<< HEAD
       <!-- Logo -->
       <router-link to="/" class="flex items-center gap-2">
         <span class="text-2xl font-bold text-blue-700">Library</span>
       </router-link>
 
       <!-- Navigation Items -->
+=======
+>>>>>>> feature_bookfront
       <NavigationItem
         v-for="item in navItems"
         :key="item.label"
         :item="item" class="text-right"
       />
     </div>
+<<<<<<< HEAD
+=======
+
+    <!-- Right: Search Input and Button -->
+    <div class="flex items-center gap-2">
+      <input
+        v-model="searchQuery"
+        type="text"
+        placeholder="Search..."
+        class="border border-gray-300 px-3 py-1 rounded-md"
+      />
+      <button
+        @click="search"
+        class="bg-black text-white px-4 py-1 rounded-md"
+      >
+        Search
+      </button>
+    </div>
+>>>>>>> feature_bookfront
   </nav>
 </template>
 
@@ -21,17 +43,33 @@
 import NavigationItem from "./NavigationItem.vue";
 import { ref } from "vue";
 
-// Navigation Items
 const navItems = ref([
   { label: "Book", path: "/book", icon: "menu_book" },
   { label: "Author", path: "/author", icon: "person" },
   { label: "Member", path: "/member", icon: "groups" },
 ]);
 
-// Search Functionality
 const searchQuery = ref("");
 
 function search() {
   alert("You searched for: " + searchQuery.value);
 }
 </script>
+
+<style scoped>
+/* Prevent any scroll, swipe, or bounce behavior on the nav bar */
+.no-swipe {
+  touch-action: none;
+  overscroll-behavior: contain;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: auto; /* still allow clicking buttons and typing input */
+}
+
+/* Optional: Disable text selection just on navigation bar */
+nav input,
+nav button {
+  user-select: text;
+  pointer-events: auto;
+}
+</style>
