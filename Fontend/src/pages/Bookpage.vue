@@ -1,9 +1,5 @@
 <template>
-<<<<<<< HEAD
-    
-=======
   <div class="p-6 space-y-8">
-    <!-- Header -->
     <div class="flex justify-between items-center">
       <h1 class="text-2xl font-bold">📚 Book Story Categories</h1>
       <button @click="openCreateForm" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg transition">
@@ -11,7 +7,6 @@
       </button>
     </div>
 
-    <!-- Category Filter -->
     <div class="flex gap-2 flex-wrap">
       <button
         v-for="cat in categories"
@@ -26,7 +21,6 @@
       </button>
     </div>
 
-    <!-- Book Table -->
     <div class="overflow-x-auto overflow-y-auto max-h-[400px] rounded-xl shadow-lg" ref="tableWrapper">
       <table class="min-w-full text-sm text-left text-gray-800">
         <thead class="bg-blue-100 text-blue-800 uppercase text-xs font-bold">
@@ -67,11 +61,13 @@
               </div>
             </td>
           </tr>
+          <tr v-if="filteredBooks.length === 0">
+            <td colspan="8" class="text-center py-4 text-gray-500">No books found.</td>
+          </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Modal -->
     <div v-if="formMode !== ''" class="fixed inset-0 z-40 bg-black/30 flex justify-center items-center px-4" @click.self="formMode = ''">
       <div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-xl z-50 relative">
         <div v-if="formMode === 'create' || formMode === 'update'">
@@ -79,17 +75,19 @@
             {{ formMode === 'create' ? 'Create Book' : 'Update Book' }}
           </h2>
           <form @submit.prevent="formMode === 'create' ? addBook() : saveUpdate()" class="space-y-4">
-            <input v-model="formBook.isbn" placeholder="ISBN" class="input w-full" />
-            <input v-model="formBook.title" placeholder="Title" class="input w-full" />
-            <input v-model="formBook.author_name" placeholder="Author Name" class="input w-full" />
-            <input v-model="formBook.publication_year" type="number" placeholder="Year" class="input w-full" />
-            <input v-model="formBook.number_of_copies" type="number" placeholder="Copies" class="input w-full" />
-            <select v-model="formBook.category" class="input w-full">
+            <input v-model="formBook.isbn" placeholder="ISBN" class="input w-full" required />
+            <input v-model="formBook.title" placeholder="Title" class="input w-full" required />
+            <input v-model="formBook.author_name" placeholder="Author Name" class="input w-full" required />
+            <input v-model.number="formBook.publication_year" type="number" placeholder="Year" class="input w-full" required />
+            <input v-model.number="formBook.number_of_copies" type="number" placeholder="Copies" class="input w-full" required />
+            <select v-model="formBook.category" class="input w-full" required>
               <option disabled value="">Select Category</option>
               <option v-for="cat in categories.filter(c => c !== 'All')" :key="cat">{{ cat }}</option>
             </select>
             <div class="flex justify-end gap-2">
-              <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">📂 Save</button>
+              <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                📂 Save
+              </button>
               <button type="button" @click="formMode = ''" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancel</button>
             </div>
           </form>
@@ -112,44 +110,88 @@
       </div>
     </div>
   </div>
->>>>>>> feature_bookfront
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 
-const API_URL = 'http://192.168.108.14:8000/api/books'
+const API = 'http://192.168.108.14:8000/api/books'
 
-const categories = ['All', 'Programming', 'Drama', 'Funny', 'Ghost']
-const active = ref('All')
 const books = ref([])
+const active = ref('All')
 const formMode = ref('')
 const openMenu = ref(null)
 const tableWrapper = ref(null)
+
+const categories = ['All', 'Programming', 'Drama', 'Funny', 'Ghost']
 
 const formBook = ref({
   id: null,
   title: '',
   isbn: '',
   author_name: '',
-  publication_year: '',
-  number_of_copies: '',
+  publication_year: null,
+  number_of_copies: null,
   category: ''
 })
 
-const filteredBooks = computed(() =>
-  active.value === 'All'
-    ? books.value
-    : books.value.filter(book => book.category === active.value)
-)
-
 const fetchBooks = async () => {
   try {
-    const res = await axios.get(API_URL)
-    books.value = res.data.data || res.data
+    const res = await axios.get(API)
+    books.value = res.data.data || []
   } catch (err) {
-    console.error('Fetch error:', err)
+    alert('Error fetching books. Please try again.')
+    console.error(err)
+  }
+}
+
+const addBook = async () => {
+  try {
+    const res = await axios.post(`${API}/create`, formBook.value)
+    books.value.push(res.data.data)
+    formMode.value = ''
+    scrollToBottom()
+  } catch (err) {
+    alert('Failed to create book. Please check your data and try again.')
+    console.error(err)
+  }
+}
+
+const saveUpdate = async () => {
+  try {
+    await axios.put(`${API}/edit/${formBook.value.id}`, formBook.value)
+    const index = books.value.findIndex(b => b.id === formBook.value.id)
+    if (index !== -1) books.value[index] = { ...formBook.value }
+    formMode.value = ''
+   
+  } catch (err) {
+    alert('Failed to update book. Please check your data and try again.')
+    console.error(err)
+  }
+}
+
+const deleteBook = async (id) => {
+  if (!confirm('Are you sure you want to delete this book?')) return
+  try {
+    await axios.delete(`${API}/delete/${id}`)
+    books.value = books.value.filter(book => book.id !== id)
+    if (formBook.value.id === id) formMode.value = ''
+    
+  } catch (err) {
+    alert('Failed to delete book. Please try again.')
+    console.error(err)
+  }
+}
+
+const showBook = async (book) => {
+  try {
+    const res = await axios.get(`${API}/${book.id}`)
+    formBook.value = res.data.data
+    formMode.value = 'show'
+  } catch (err) {
+    alert('Failed to load book details.')
+    console.error(err)
   }
 }
 
@@ -160,20 +202,9 @@ const openCreateForm = () => {
     title: '',
     isbn: '',
     author_name: '',
-    publication_year: '',
-    number_of_copies: '',
+    publication_year: null,
+    number_of_copies: null,
     category: ''
-  }
-}
-
-const addBook = async () => {
-  try {
-    const res = await axios.post(API_URL, formBook.value)
-    books.value.push(res.data)
-    formMode.value = ''
-    scrollToBottom()
-  } catch (err) {
-    console.error('Create error:', err)
   }
 }
 
@@ -182,38 +213,17 @@ const openUpdateForm = (book) => {
   formBook.value = { ...book }
 }
 
-const saveUpdate = async () => {
-  try {
-    const res = await axios.put(`${API_URL}/${formBook.value.id}`, formBook.value)
-    const index = books.value.findIndex(b => b.id === formBook.value.id)
-    if (index !== -1) books.value[index] = res.data
-    formMode.value = ''
-  } catch (err) {
-    console.error('Update error:', err)
-  }
-}
-
-const deleteBook = async (id) => {
-  if (!confirm('Are you sure you want to delete this book?')) return
-  try {
-    await axios.delete(`${API_URL}/${id}`)
-    books.value = books.value.filter(book => book.id !== id)
-    if (formBook.value.id === id) formMode.value = ''
-  } catch (err) {
-    console.error('Delete error:', err)
-  }
-}
-
-const showBook = (book) => {
-  formMode.value = 'show'
-  formBook.value = { ...book }
-}
-
 const scrollToBottom = () => {
   if (tableWrapper.value) {
     tableWrapper.value.scrollTop = tableWrapper.value.scrollHeight
   }
 }
+
+const filteredBooks = computed(() =>
+  active.value === 'All'
+    ? books.value
+    : books.value.filter(book => book.category === active.value)
+)
 
 onMounted(fetchBooks)
 </script>
