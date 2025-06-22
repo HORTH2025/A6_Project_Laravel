@@ -28,7 +28,6 @@ Route::get('/authors/{id}', [AuthorController::class , 'show']);
 Route::post('/authors/create', [AuthorController::class , 'create']);
 Route::put('/authors/edit/{id}', [AuthorController::class , 'edit']);
 Route::delete('/authors/delete/{id}', [AuthorController::class , 'delete']);
-
 Route::prefix('members')->group(function () {
     Route::get('/', [MemberController::class, 'index']);
     Route::get('/{id}', [MemberController::class, 'show']);
