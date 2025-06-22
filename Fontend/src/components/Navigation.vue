@@ -3,30 +3,16 @@
     <!-- Left: Logo and Navigation -->
     <div class="flex items-center gap-12">
       <!-- Logo -->
-     
+      <router-link to="/" class="flex items-center gap-2">
+        <span class="text-2xl font-bold text-blue-700">Library</span>
+      </router-link>
 
       <!-- Navigation Items -->
       <NavigationItem
         v-for="item in navItems"
         :key="item.label"
-        :item="item"
+        :item="item" class="text-right"
       />
-    </div>
-
-    <!-- Right: Search Input and Button -->
-    <div class="flex items-center gap-2">
-      <input
-        v-model="searchQuery"
-        type="text"
-        placeholder="Search..."
-        class="border border-gray-300 px-3 py-1 rounded-md"
-      />
-      <button
-        @click="search"
-        class="bg-black text-white px-4 py-1 rounded-md "
-      >
-        Search
-      </button>
     </div>
   </nav>
 </template>

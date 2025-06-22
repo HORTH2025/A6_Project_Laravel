@@ -2,7 +2,7 @@
   <div class="p-6 max-w-6xl mx-auto">
     <!-- Header -->
     <div class="flex items-center justify-between mb-6">
-      <h1 class="text-5xl font-bold text-gray-800">Author</h1>
+      <h1 class="text-5xl font-bold text-gray-800">Authors</h1>
       <button
         @click="createAuthor"
         class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
