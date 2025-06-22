@@ -5,10 +5,6 @@ use App\Http\Controllers\BookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MemberController;
-// use Illuminate\Http\Request;
-
-
-
 
 /*
 |--------------------------------------------------------------------------
