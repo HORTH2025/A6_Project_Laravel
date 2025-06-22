@@ -1,7 +1,4 @@
 <template>
-<<<<<<< HEAD
-    
-=======
   <div class="p-6 space-y-8">
     <!-- Header -->
     <div class="flex justify-between items-center">
@@ -112,7 +109,6 @@
       </div>
     </div>
   </div>
->>>>>>> feature_bookfront
 </template>
 
 <script setup>
