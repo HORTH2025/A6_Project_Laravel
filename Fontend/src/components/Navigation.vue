@@ -20,9 +20,6 @@
 <script setup>
 import NavigationItem from "./NavigationItem.vue";
 import { ref } from "vue";
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
 
 // Navigation Items
 const navItems = ref([
@@ -34,19 +31,7 @@ const navItems = ref([
 // Search Functionality
 const searchQuery = ref("");
 
-function searchAuthors() {
-  if (router.currentRoute.value.path === '/author') {
-    // If we're already on the author page, navigate with query params
-    router.push({
-      path: '/author',
-      query: { search: searchQuery.value }
-    });
-  } else {
-    // If we're on another page, navigate to author page with search query
-    router.push({
-      path: '/author',
-      query: { search: searchQuery.value }
-    });
-  }
+function search() {
+  alert("You searched for: " + searchQuery.value);
 }
 </script>
